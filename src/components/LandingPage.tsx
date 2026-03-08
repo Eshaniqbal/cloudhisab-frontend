@@ -582,8 +582,9 @@ export default function LandingPage() {
                     <div className="flex flex-col md:flex-row justify-between items-center text-sm">
                         <p>© {new Date().getFullYear()} CloudHisaab. All rights reserved.</p>
                         <div className="flex space-x-6 mt-4 md:mt-0">
-                            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-                            <a href="#" className="hover:text-white transition-colors">Terms</a>
+                            <a href="/privacy" className="hover:text-white transition-colors">Privacy</a>
+                            <a href="/terms" className="hover:text-white transition-colors">Terms</a>
+                            <a href="/contact" className="hover:text-white transition-colors">Contact</a>
                         </div>
                     </div>
                 </div>
