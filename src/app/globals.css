@@ -1,72 +1,44 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-200: #bfdbfe;
-  --color-brand-300: #93c5fd;
-  --color-brand-400: #60a5fa;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-800: #1e40af;
-  --color-brand-900: #1e3a8a;
-  --color-brand-950: #172554;
-
-  --color-accent-50: #f0fdf4;
-  --color-accent-100: #dcfce7;
-  --color-accent-500: #22c55e;
-  --color-accent-600: #16a34a;
-
-  --animate-fade-in-up: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  --animate-fade-in: fade-in 1s ease-out forwards;
-}
-
-@keyframes fade-in-up {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@layer base {
-  :root {
-    --background: #ffffff;
-    --foreground: #0f172a;
-  }
+  --color-brutal-olive: #5b611c;
+  --color-brutal-pink: #ff5cd3;
+  --color-brutal-cyan: #00f5ff;
+  --color-brutal-yellow: #ffeb00;
+  --color-brutal-bg-light: #f3f4f6;
+  --color-brutal-black: #000000;
+  --color-brutal-white: #ffffff;
 }
 
 @layer base {
   body {
-    background-color: var(--background);
-    color: var(--foreground);
-    @apply antialiased selection:bg-brand-200 selection:text-brand-900;
+    background-color: var(--color-brutal-white);
+    color: var(--color-brutal-black);
+    @apply antialiased selection:bg-brutal-cyan selection:text-black font-sans;
   }
 }
 
-.glass-card {
-  @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
+.brutal-border {
+  @apply border-[3px] border-brutal-black;
 }
 
-.text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-indigo-600;
+.brutal-shadow {
+  @apply shadow-[6px_6px_0px_0px_rgba(0,0,0,1)];
 }
 
-.bg-gradient-primary {
-  @apply bg-gradient-to-br from-brand-600 via-indigo-600 to-violet-700;
+.brutal-card {
+  @apply bg-brutal-white border-[3px] border-brutal-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)];
 }
+
+.brutal-btn {
+  @apply px-8 py-3 font-black uppercase tracking-wider border-[3px] border-brutal-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none;
+}
+
+.brutal-btn-black { @apply bg-brutal-black text-white hover:bg-[#222]; }
+.brutal-btn-white { @apply bg-brutal-white text-black hover:bg-slate-50; }
+.brutal-btn-yellow { @apply bg-brutal-yellow text-black hover:bg-[#e6d300]; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 14px; height: 14px; }
+::-webkit-scrollbar-track { background: var(--color-brutal-white); border-left: 3px solid #000; }
+::-webkit-scrollbar-thumb { background: var(--color-brutal-black); border: 3px solid var(--color-brutal-white); }
