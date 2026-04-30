@@ -17,6 +17,14 @@ export default function LandingPage() {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
+    const maskImage = useMotionTemplate`
+        radial-gradient(
+            450px circle at ${mouseX}px ${mouseY}px,
+            black,
+            transparent 80%
+        )
+    `;
+
     function handleMouseMove({ clientX, clientY }: React.MouseEvent) {
         mouseX.set(clientX);
         mouseY.set(clientY);
@@ -34,22 +42,10 @@ export default function LandingPage() {
 
                 {/* Interactive highlight grid */}
                 <motion.div
-                    className="absolute inset-0 bg-[linear-gradient(to_right,#4f46e530_1px,transparent_1px),linear-gradient(to_bottom,#4f46e530_1px,transparent_1px)] bg-[size:40px_40px] opacity-0 transition duration-300 group-hover:opacity-100"
+                    className="absolute inset-0 bg-[linear-gradient(to_right,#4f46e540_1px,transparent_1px),linear-gradient(to_bottom,#4f46e540_1px,transparent_1px)] bg-[size:40px_40px] opacity-0 transition duration-300 group-hover:opacity-100"
                     style={{
-                        WebkitMaskImage: useMotionTemplate`
-                            radial-gradient(
-                                400px circle at ${mouseX}px ${mouseY}px,
-                                black,
-                                transparent 80%
-                            )
-                        `,
-                        maskImage: useMotionTemplate`
-                            radial-gradient(
-                                400px circle at ${mouseX}px ${mouseY}px,
-                                black,
-                                transparent 80%
-                            )
-                        `,
+                        WebkitMaskImage: maskImage,
+                        maskImage: maskImage
                     }}
                 />
             </div>
@@ -58,7 +54,7 @@ export default function LandingPage() {
                 <Navbar />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+            <section className="relative pt-24 pb-16 md:pt-48 md:pb-32 overflow-hidden">
                 {/* Background decorative elements */}
                 <div className="absolute top-0 inset-x-0 h-[800px] bg-gradient-to-b from-indigo-50/80 to-transparent -z-10" />
                 <motion.div 
@@ -120,10 +116,10 @@ export default function LandingPage() {
                             <span className="flex h-2 w-2 rounded-full bg-indigo-500"></span>
                             CloudHisaab 2.0 is now live
                         </div>
-                        <h1 className="text-5xl md:text-7xl font-bold text-slate-900 tracking-tight mb-8 leading-[1.1]">
+                        <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-slate-900 tracking-tight mb-6 md:mb-8 leading-[1.1]">
                             Smart billing & inventory for <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">modern businesses</span>
                         </h1>
-                        <p className="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
                             The all-in-one cloud platform designed for retailers and distributors to manage GST billing, stock, and customer ledgers seamlessly.
                         </p>
                         
@@ -143,16 +139,17 @@ export default function LandingPage() {
                     {/* Dashboard Preview */}
                     <motion.div 
                         initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="mt-20 relative mx-auto max-w-5xl"
+                        className="mt-12 md:mt-20 relative mx-auto max-w-5xl"
                     >
                         <motion.div 
                             animate={{ scale: [1, 1.02, 1], opacity: [0.15, 0.25, 0.15] }}
                             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                             className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-20"
                         ></motion.div>
-                        <div className="relative rounded-2xl bg-white border border-slate-200 shadow-2xl overflow-hidden flex flex-col h-[400px] sm:h-[500px] md:h-[600px]">
+                        <div className="relative rounded-2xl bg-white border border-slate-200 shadow-2xl overflow-hidden flex flex-col h-[650px] sm:h-[700px] md:h-[750px]">
                             {/* Browser Header */}
                             <div className="bg-slate-50 border-b border-slate-200 px-4 py-3 flex items-center gap-2">
                                 <div className="flex gap-1.5">
@@ -275,7 +272,7 @@ export default function LandingPage() {
                                                 ))}
                                             </div>
                                         </div>
-                                        <div className="flex-1 bg-white border border-slate-100 rounded-xl shadow-sm p-4 hidden md:flex flex-col gap-4 overflow-hidden">
+                                        <div className="flex-1 bg-white border border-slate-100 rounded-xl shadow-sm p-4 flex flex-col gap-4 overflow-hidden">
                                             <div className="flex justify-between items-center mb-2">
                                                 <div className="text-sm font-bold text-slate-900">Recent Transactions</div>
                                                 <div className="text-xs text-indigo-600 cursor-pointer font-medium">View All</div>
@@ -411,10 +408,7 @@ export default function LandingPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-24 relative overflow-hidden bg-transparent z-0 border-t border-slate-200/50">
-                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-200/40 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/4 pointer-events-none"></div>
-                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-200/40 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/4 pointer-events-none"></div>
-                
+            <section className="py-16 md:py-24 relative overflow-hidden bg-transparent z-0 border-t border-slate-200/50">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-900 relative z-10">
                     <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to transform your retail business?</h2>
                     <p className="text-slate-600 text-lg mb-10 max-w-2xl mx-auto">Join thousands of smart retailers who have automated their billing, inventory, and accounting with CloudHisaab.</p>
@@ -500,12 +494,25 @@ function PricingCard({ title, price, desc, features, btnText, featured = false }
             variants={fadeIn}
             initial="initial"
             whileInView="whileInView"
-            className={`rounded-2xl p-8 flex flex-col relative ${featured ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20 scale-105 z-10' : 'bg-white border border-slate-200 text-slate-900 shadow-sm hover:shadow-md transition-shadow'}`}
+            whileHover={{ 
+                y: -12,
+                transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] } 
+            }}
+            viewport={{ once: true }}
+            className={`rounded-2xl p-8 flex flex-col relative transition-all duration-300 ${
+                featured 
+                ? 'bg-indigo-600 text-white shadow-2xl shadow-indigo-500/30 scale-105 z-10' 
+                : 'bg-white border border-slate-200 text-slate-900 shadow-sm hover:shadow-xl hover:border-indigo-200'
+            }`}
         >
             {featured && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-amber-400 to-orange-400 text-white px-4 py-1 rounded-full text-xs font-bold tracking-wider uppercase shadow-sm">
+                <motion.div 
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-amber-400 to-orange-400 text-white px-4 py-1 rounded-full text-xs font-bold tracking-wider uppercase shadow-md z-20"
+                >
                     Most Popular
-                </div>
+                </motion.div>
             )}
             <h3 className={`text-xl font-semibold mb-2 ${featured ? 'text-indigo-100' : 'text-slate-900'}`}>{title}</h3>
             <p className={`text-sm mb-6 h-10 ${featured ? 'text-indigo-200' : 'text-slate-500'}`}>{desc}</p>
@@ -522,22 +529,29 @@ function PricingCard({ title, price, desc, features, btnText, featured = false }
             
             <ul className="space-y-4 flex-grow mb-8">
                 {features.map((f: string, i: number) => (
-                    <li key={i} className="flex items-start gap-3 text-sm">
+                    <motion.li 
+                        key={i} 
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.1 + (i * 0.05) }}
+                        className="flex items-start gap-3 text-sm"
+                    >
                         <CheckCircle2 size={18} className={`shrink-0 mt-0.5 ${featured ? 'text-indigo-300' : 'text-indigo-500'}`} />
                         <span className={featured ? 'text-indigo-50' : 'text-slate-600'}>{f}</span>
-                    </li>
+                    </motion.li>
                 ))}
             </ul>
             
-            <button 
+            <motion.button 
+                whileTap={{ scale: 0.98 }}
                 className={`w-full py-3 rounded-lg font-medium transition-all ${
                     featured 
-                        ? 'bg-white text-indigo-600 hover:bg-slate-50' 
-                        : 'bg-slate-50 text-slate-900 hover:bg-slate-100 border border-slate-200'
+                        ? 'bg-white text-indigo-600 hover:bg-slate-50 shadow-lg' 
+                        : 'bg-slate-50 text-slate-900 hover:bg-indigo-600 hover:text-white border border-slate-200'
                 }`}
             >
                 {btnText}
-            </button>
+            </motion.button>
         </motion.div>
     );
 }

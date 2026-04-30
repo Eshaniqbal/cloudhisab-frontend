@@ -55,15 +55,26 @@ export default function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean 
                         initial={{ opacity: 0, height: 0 }} 
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden fixed top-[60px] left-0 w-full bg-white border-b border-slate-200 z-40 shadow-lg overflow-hidden"
+                        className="md:hidden fixed top-[72px] left-0 w-full bg-white border-b border-slate-200 z-40 shadow-xl overflow-hidden"
                     >
-                        <div className="p-4 flex flex-col space-y-4">
-                            <Link href="/#features" className="px-4 py-2 text-slate-600 font-medium hover:bg-slate-50 rounded-lg" onClick={() => setIsMenuOpen(false)}>Features</Link>
-                            <Link href="/#pricing" className="px-4 py-2 text-slate-600 font-medium hover:bg-slate-50 rounded-lg" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
-                            <Link href="/#faq" className="px-4 py-2 text-slate-600 font-medium hover:bg-slate-50 rounded-lg" onClick={() => setIsMenuOpen(false)}>FAQ</Link>
-                            <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
-                                <a href="https://app.cloudhisab.in/login" className="w-full py-2.5 text-center text-slate-600 font-medium border border-slate-200 rounded-lg">Log in</a>
-                                <a href="https://app.cloudhisab.in/register" className="w-full py-2.5 text-center text-white font-medium bg-indigo-600 rounded-lg shadow-md shadow-indigo-500/25">Get Started</a>
+                        <div className="p-4 flex flex-col space-y-1">
+                            {[
+                                { name: 'Features', href: '/#features' },
+                                { name: 'Pricing', href: '/#pricing' },
+                                { name: 'FAQ', href: '/#faq' }
+                            ].map((item) => (
+                                <Link 
+                                    key={item.name}
+                                    href={item.href} 
+                                    className="block px-4 py-3 text-base font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-lg transition-colors"
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {item.name}
+                                </Link>
+                            ))}
+                            <div className="pt-4 pb-2 border-t border-slate-100 flex flex-col gap-3 mt-2">
+                                <a href="https://app.cloudhisab.in/login" className="w-full py-3 text-center text-slate-600 font-medium border border-slate-200 rounded-lg">Log in</a>
+                                <a href="https://app.cloudhisab.in/register" className="w-full py-3 text-center text-white font-medium bg-slate-900 rounded-lg shadow-md">Get Started</a>
                             </div>
                         </div>
                     </motion.div>
