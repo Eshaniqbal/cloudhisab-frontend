@@ -1,66 +1,69 @@
 import React from 'react';
-import Link from 'next/link';
+import { Mail, Phone, MapPin } from 'lucide-react';
+import Navbar from '../../components/Navbar';
 
-export default function ContactUs() {
+export default function ContactPage() {
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-brand-200 selection:text-brand-900">
-            <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center h-20">
-                        <Link href="/" className="flex items-center">
-                            <img src="/logo1.png" alt="CloudHisaab Logo" className="h-16 w-auto" />
-                        </Link>
-                        <div className="hidden md:flex items-center space-x-8">
-                            <Link href="/" className="text-slate-600 hover:text-brand-600 font-medium transition-colors">Home</Link>
+        <div className="min-h-screen bg-[#FCFBF4] text-slate-900 font-sans">
+            <Navbar alwaysSolid />
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+                
+                <h1 className="text-4xl md:text-5xl font-bold mb-8">Contact Us</h1>
+                <p className="text-xl text-slate-600 mb-12">We'd love to hear from you. Please reach out with any questions, feedback, or support requests.</p>
+                
+                <div className="grid md:grid-cols-2 gap-12">
+                    <div className="space-y-8">
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center shrink-0">
+                                <Phone size={24} />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold mb-2">Phone / WhatsApp</h3>
+                                <p className="text-slate-600">+91 9419403158</p>
+                                <a href="https://wa.me/919419403158" className="text-indigo-600 font-medium mt-2 inline-block">Message on WhatsApp</a>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </nav>
-
-            <main className="pt-32 pb-20 px-4 max-w-4xl mx-auto">
-                <div className="bg-white p-8 md:p-12 rounded-3xl border border-slate-200 shadow-sm text-center">
-                    <h1 className="text-4xl font-extrabold mb-8 text-slate-900">Contact Us</h1>
-
-                    <div className="space-y-8 text-slate-600 leading-relaxed text-lg max-w-2xl mx-auto">
-                        <p className="text-slate-500">We're here to help! If you have any questions, concerns, or need assistance with CloudHisaab, please don't hesitate to reach out to us using the information below.</p>
-
-                        <div className="flex flex-col items-center gap-6 mt-8">
-                            <div className="bg-brand-50 p-6 rounded-2xl w-full border border-brand-100 flex flex-col items-center">
-                                <span className="text-2xl mb-2">📞</span>
-                                <h3 className="font-bold text-slate-800 text-xl mb-1">Phone / WhatsApp</h3>
-                                <a href="tel:+919419403158" className="text-brand-600 hover:text-brand-700 font-medium">+91 9419403158</a>
+                        
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center shrink-0">
+                                <Mail size={24} />
                             </div>
-
-                            <div className="bg-brand-50 p-6 rounded-2xl w-full border border-brand-100 flex flex-col items-center">
-                                <span className="text-2xl mb-2">📧</span>
-                                <h3 className="font-bold text-slate-800 text-xl mb-1">Email</h3>
-                                <a href="mailto:support@cloudhisab.in" className="text-brand-600 hover:text-brand-700 font-medium">support@cloudhisab.in</a>
-                            </div>
-
-                            <div className="bg-brand-50 p-6 rounded-2xl w-full border border-brand-100 flex flex-col items-center">
-                                <span className="text-2xl mb-2">📍</span>
-                                <h3 className="font-bold text-slate-800 text-xl mb-1">Address</h3>
-                                <p className="text-slate-600 text-center">Jammu & Kashmir, India</p>
+                            <div>
+                                <h3 className="text-xl font-bold mb-2">Email</h3>
+                                <p className="text-slate-600">support@cloudhisab.in</p>
+                                <a href="mailto:support@cloudhisab.in" className="text-indigo-600 font-medium mt-2 inline-block">Send an Email</a>
                             </div>
                         </div>
 
-                        <div className="mt-12 text-sm text-slate-500">
-                            <p>Support Hours: Monday - Saturday | 9:00 AM to 6:00 PM</p>
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center shrink-0">
+                                <MapPin size={24} />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold mb-2">Office</h3>
+                                <p className="text-slate-600">Jammu & Kashmir, India</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </main>
-
-            <footer className="bg-slate-900 py-10 text-slate-400 border-t border-slate-800 mt-20">
-                <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm">
-                    <p>© {new Date().getFullYear()} CloudHisaab. All rights reserved.</p>
-                    <div className="flex space-x-6 mt-4 md:mt-0">
-                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-                        <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-                        <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+                    
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                        <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
+                        <form className="space-y-4" action="https://wa.me/919419403158" method="get" target="_blank">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
+                                <input type="text" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Your Name" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">Message</label>
+                                <textarea name="text" rows={4} className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="How can we help you?"></textarea>
+                            </div>
+                            <button type="submit" className="w-full py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition-colors">
+                                Send via WhatsApp
+                            </button>
+                        </form>
                     </div>
                 </div>
-            </footer>
+            </div>
         </div>
     );
 }

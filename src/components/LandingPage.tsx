@@ -1,442 +1,543 @@
 "use client";
 
-import React, { useState } from 'react';
-import { motion, Variants } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence, Variants, useMotionValue, useMotionTemplate } from 'framer-motion';
 import {
-    CheckCircle2, ChevronRight, Menu, X, Cloud, Zap, Package, BarChart3, TrendingUp, Users, Shield, Phone
+    CheckCircle2, ChevronRight, Menu, X, Cloud, Zap, Package, BarChart3, TrendingUp, Users, Shield, Phone, ArrowRight, Play
 } from 'lucide-react';
 
 const fadeIn: Variants = {
     initial: { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    whileInView: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
-const staggerContainer: Variants = {
-    initial: {},
-    whileInView: { transition: { staggerChildren: 0.1 } }
-};
+import Navbar from './Navbar';
 
 export default function LandingPage() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    function handleMouseMove({ clientX, clientY }: React.MouseEvent) {
+        mouseX.set(clientX);
+        mouseY.set(clientY);
+    }
 
     return (
-        <div className="min-h-screen bg-white font-sans text-black overflow-x-hidden">
-            {/* Navbar */}
-            <nav className="w-full bg-white border-b-[3px] border-black px-4 sm:px-6 lg:px-8 py-4 sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto flex justify-between items-center">
-                    <a href="#" className="flex items-center space-x-2">
-                        <span className="font-black text-2xl uppercase tracking-tighter">CloudHisaab</span>
-                    </a>
+        <div 
+            onMouseMove={handleMouseMove}
+            className="min-h-screen bg-[#FCFBF4] font-sans text-slate-900 overflow-x-hidden relative group"
+        >
+            {/* Global Interactive Fixed Grid Background */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                {/* Base faint grid */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_50%,transparent_100%)]"></div>
 
-                    <div className="hidden md:flex items-center space-x-10">
-                        <a href="#features" className="font-bold text-xs uppercase tracking-widest hover:text-[#ff5cd3] transition-colors">Features</a>
-                        <a href="#pricing" className="font-bold text-xs uppercase tracking-widest hover:text-[#ff5cd3] transition-colors">Pricing</a>
-                        <a href="#faq" className="font-bold text-xs uppercase tracking-widest hover:text-[#ff5cd3] transition-colors">FAQ</a>
-                    </div>
+                {/* Interactive highlight grid */}
+                <motion.div
+                    className="absolute inset-0 bg-[linear-gradient(to_right,#4f46e530_1px,transparent_1px),linear-gradient(to_bottom,#4f46e530_1px,transparent_1px)] bg-[size:40px_40px] opacity-0 transition duration-300 group-hover:opacity-100"
+                    style={{
+                        WebkitMaskImage: useMotionTemplate`
+                            radial-gradient(
+                                400px circle at ${mouseX}px ${mouseY}px,
+                                black,
+                                transparent 80%
+                            )
+                        `,
+                        maskImage: useMotionTemplate`
+                            radial-gradient(
+                                400px circle at ${mouseX}px ${mouseY}px,
+                                black,
+                                transparent 80%
+                            )
+                        `,
+                    }}
+                />
+            </div>
 
-                    <div className="hidden md:flex items-center space-x-4">
-                        <motion.a 
-                            href="https://app.cloudhisab.in"
-                            whileHover={{ scale: 1.05, x: -2, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="px-8 py-2 font-black text-xs uppercase border-2 border-black bg-[#ffeb00] hover:bg-[#e6d300] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none transition-shadow inline-block"
-                        >
-                            Start Now
-                        </motion.a>
-                    </div>
-
-                    <div className="md:hidden">
-                        <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                            {isMenuOpen ? <X /> : <Menu />}
-                        </button>
-                    </div>
-                </div>
-            </nav>
-
-            {/* Mobile Menu */}
-            {isMenuOpen && (
-                <motion.div 
-                    initial={{ opacity: 0, y: -10 }} 
-                    animate={{ opacity: 1, y: 0 }}
-                    className="md:hidden bg-white border-b-3 border-black p-6 space-y-4 font-bold text-xs uppercase tracking-widest"
-                >
-                    <a href="#features" className="block" onClick={() => setIsMenuOpen(false)}>Features</a>
-                    <a href="#pricing" className="block" onClick={() => setIsMenuOpen(false)}>Pricing</a>
-                    <a href="#faq" className="block" onClick={() => setIsMenuOpen(false)}>FAQ</a>
-                    <div className="pt-4">
-                        <a href="https://app.cloudhisab.in" className="block w-full py-4 border-2 border-black bg-[#ffeb00] font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center uppercase">Start Now</a>
-                    </div>
-                </motion.div>
-            )}
+            <div className="relative z-10">
+                <Navbar />
 
             {/* Hero Section */}
-            <section className="bg-[#5b611c] pt-24 pb-40 px-4 border-b-[3px] border-black overflow-hidden relative">
-                <div className="max-w-5xl mx-auto text-center relative z-10">
-                    {/* Floating icons */}
+            <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+                {/* Background decorative elements */}
+                <div className="absolute top-0 inset-x-0 h-[800px] bg-gradient-to-b from-indigo-50/80 to-transparent -z-10" />
+                <motion.div 
+                    animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-1/4 right-0 -translate-y-1/2 translate-x-1/3 w-[600px] h-[600px] bg-purple-200/40 rounded-full blur-3xl -z-10" 
+                />
+                <motion.div 
+                    animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    className="absolute top-1/3 left-0 -translate-y-1/2 -translate-x-1/3 w-[500px] h-[500px] bg-indigo-200/40 rounded-full blur-3xl -z-10" 
+                />
+
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+                    {/* Floating Animated Badges */}
                     <motion.div 
-                        animate={{ y: [0, -20, 0], rotate: [-15, -10, -15] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                        className="absolute top-0 left-0 -translate-x-12 opacity-30 pointer-events-none"
+                        animate={{ y: [0, -20, 0], rotate: [0, 2, 0] }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute top-10 left-0 xl:-left-10 hidden lg:flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-2xl shadow-xl shadow-indigo-100/50 border border-slate-100 z-10"
                     >
-                        <FileIcon />
-                    </motion.div>
-                    <motion.div 
-                        animate={{ y: [0, 20, 0], rotate: [15, 20, 15] }}
-                        transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                        className="absolute bottom-0 right-0 translate-x-12 opacity-30 pointer-events-none"
-                    >
-                        <TagIcon />
-                    </motion.div>
-
-                    <motion.div initial="initial" whileInView="whileInView" viewport={{ once: true }} variants={fadeIn}>
-                        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-[0.85] mb-6">
-                            Run Your Shop <br />
-                            <motion.span 
-                                initial={{ scale: 0.9, opacity: 0 }}
-                                whileInView={{ scale: 1, opacity: 1 }}
-                                transition={{ delay: 0.4, type: "spring" }}
-                                className="bg-[#f3f4f6] text-[#5b611c] px-6 py-2 inline-block border-[4px] border-black mt-4 rotate-[-1deg]"
-                            >
-                                Like A Boss
-                            </motion.span>
-                        </h1>
-                        <p className="text-white/90 font-bold text-xl md:text-2xl max-w-2xl mx-auto mb-16 leading-tight uppercase italic tracking-tight">
-                            The only Cloud ERP for modern merchants who value speed, style, and massive growth. No more messy ledgers.
-                        </p>
-                    </motion.div>
-
-                    {/* Enhanced Dashboard Illustration */}
-                    <motion.div 
-                        initial={{ y: 50, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.8 }}
-                        className="max-w-4xl mx-auto bg-white border-[4px] border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] rounded-sm overflow-hidden relative"
-                    >
-                        {/* Browser Top Bar */}
-                        <div className="bg-[#e5e7eb] border-b-[3px] border-black p-4 flex items-center justify-between">
-                            <div className="flex space-x-2">
-                                <div className="w-4 h-4 rounded-full bg-[#ff5f56] border-2 border-black/20"></div>
-                                <div className="w-4 h-4 rounded-full bg-[#ffbd2e] border-2 border-black/20"></div>
-                                <div className="w-4 h-4 rounded-full bg-[#27c93f] border-2 border-black/20"></div>
-                            </div>
-                            <div className="bg-white border-2 border-black/10 px-12 py-1 rounded text-[10px] font-black text-black/20 uppercase tracking-widest hidden sm:block">cloudhisab.in/dashboard</div>
-                            <div className="text-xs font-black text-black/30 uppercase tracking-widest">V2.4.0</div>
-                        </div>
-
-                        <div className="flex h-[400px] md:h-[450px]">
-                            {/* Dashboard Sidebar - Hidden on small mobile */}
-                            <div className="hidden sm:flex w-16 md:w-20 border-r-[4px] border-black bg-slate-50 flex-col items-center py-6 space-y-6">
-                                {[1, 2, 3, 4].map((i) => (
-                                    <motion.div 
-                                        key={i}
-                                        whileHover={{ scale: 1.1, rotate: 5 }}
-                                        className={`w-8 h-8 md:w-10 md:h-10 border-[3px] border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] ${i === 1 ? 'bg-[#ff5cd3]' : 'bg-white'}`}
-                                    ></motion.div>
-                                ))}
-                            </div>
-
-                            {/* Dashboard Main Content */}
-                            <div className="flex-1 p-4 md:p-6 flex flex-col gap-4 md:gap-6 overflow-hidden">
-                                {/* Header Mockup */}
-                                <div className="flex justify-between items-center">
-                                    <div className="space-y-1 md:space-y-2">
-                                        <div className="w-20 md:w-32 h-3 md:h-4 bg-black/10"></div>
-                                        <div className="w-32 md:w-48 h-5 md:h-6 bg-black"></div>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border-[3px] border-black bg-[#00f5ff]"></div>
-                                    </div>
-                                </div>
-
-                                <div className="flex-1 flex flex-col lg:flex-row gap-4 md:gap-6 min-h-0">
-                                    {/* Main Chart Area */}
-                                    <div className="flex-[2] lg:flex-[3] bg-[#00f5ff] border-[4px] border-black relative group p-4 md:p-6 overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                                        <div className="absolute top-2 md:top-4 left-2 md:left-4 font-black uppercase text-[8px] md:text-xs">Sales Volume</div>
-                                        <div className="h-full flex items-end justify-around pt-6 md:pt-8 gap-1 md:gap-2">
-                                            {[40, 70, 45, 90, 65, 80, 55, 95].map((h, i) => (
-                                                <motion.div 
-                                                    key={i}
-                                                    initial={{ height: 0 }}
-                                                    whileInView={{ height: `${h}%` }}
-                                                    transition={{ delay: 0.5 + (i * 0.1), duration: 1, type: "spring" }}
-                                                    className={`w-full bg-white border-[2px] md:border-[3px] border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${i > 4 ? 'hidden sm:block' : ''}`}
-                                                ></motion.div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Right Panel Cards - Simplified for mobile */}
-                                    <div className="flex-1 flex flex-row lg:flex-col gap-3 md:gap-4 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 no-scrollbar">
-                                        <motion.div 
-                                            whileHover={{ x: -5 }} 
-                                            className="min-w-[120px] lg:min-w-0 flex-1 h-20 md:h-24 bg-[#ff5cd3] border-[3px] md:border-[4px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-3 md:p-4 relative overflow-hidden"
-                                        >
-                                            <div className="font-black text-white text-[8px] md:text-[10px] uppercase">Orders</div>
-                                            <div className="font-black text-white text-xl md:text-2xl tracking-tighter">1,284</div>
-                                        </motion.div>
-                                        <motion.div 
-                                            whileHover={{ x: -5 }} 
-                                            className="min-w-[120px] lg:min-w-0 flex-1 h-20 md:h-24 bg-[#ffeb00] border-[3px] md:border-[4px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-3 md:p-4"
-                                        >
-                                            <div className="font-black text-black text-[8px] md:text-[10px] uppercase">Profit</div>
-                                            <div className="font-black text-black text-xl md:text-2xl tracking-tighter">₹42.5K</div>
-                                        </motion.div>
-                                        <motion.div 
-                                            whileHover={{ x: -5 }} 
-                                            className="hidden sm:block min-w-[120px] lg:min-w-0 flex-1 h-20 md:h-24 bg-white border-[3px] md:border-[4px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-3 md:p-4"
-                                        >
-                                            <div className="font-black text-black/30 text-[8px] md:text-[10px] uppercase">Cust</div>
-                                            <div className="font-black text-black text-xl md:text-2xl tracking-tighter">842</div>
-                                        </motion.div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Animated Mouse Cursor Simulation - Hidden on small mobile */}
-                        <motion.div 
-                            animate={{ 
-                                x: [50, 200, 150, 300, 50], 
-                                y: [50, 150, 250, 100, 50],
-                            }}
-                            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute pointer-events-none z-50 text-black drop-shadow-lg hidden sm:block"
-                        >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="black" strokeWidth="2">
-                                <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
-                            </svg>
-                        </motion.div>
-                    </motion.div>
-
-                    {/* Stat Overlay - Adjusted for mobile */}
-                    <motion.div 
-                        initial={{ scale: 0, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: 0.6, type: "spring" }}
-                        className="absolute bottom-[-20px] md:bottom-[-40px] right-2 md:right-[-20px] bg-white border-[3px] md:border-[4px] border-black p-3 md:p-6 flex items-center space-x-3 md:space-x-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rotate-3 z-30"
-                    >
-                        <div className="w-10 h-10 md:w-14 md:h-14 bg-[#27c93f] border-2 md:border-3 border-black flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                            <TrendingUp size={20} className="text-white md:hidden" />
-                            <TrendingUp size={32} className="text-white hidden md:block" />
+                        <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center">
+                            <Package size={20} />
                         </div>
                         <div className="text-left">
-                            <div className="font-black text-lg md:text-3xl leading-none">+242% SALES</div>
-                            <div className="text-[8px] md:text-xs font-black text-black/40 uppercase tracking-widest mt-0.5 md:mt-1">Growth via CloudHisaab</div>
+                            <div className="text-xs text-slate-400 font-medium">Stock Update</div>
+                            <div className="text-sm font-bold text-slate-700">+150 Items</div>
+                        </div>
+                    </motion.div>
+
+                    <motion.div 
+                        animate={{ y: [0, 25, 0], x: [0, -10, 0] }}
+                        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                        className="absolute bottom-20 right-0 xl:-right-10 hidden lg:flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-2xl shadow-xl shadow-purple-100/50 border border-slate-100 z-10"
+                    >
+                        <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                            <CheckCircle2 size={20} />
+                        </div>
+                        <div className="text-left">
+                            <div className="text-xs text-slate-400 font-medium">Invoice #1042</div>
+                            <div className="text-sm font-bold text-slate-700">₹4,250 Paid</div>
+                        </div>
+                    </motion.div>
+
+                    <motion.div 
+                        animate={{ y: [0, -15, 0], rotate: [0, -5, 0], scale: [1, 1.05, 1] }}
+                        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                        className="absolute top-24 right-10 hidden lg:flex items-center justify-center w-14 h-14 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-amber-100/50 border border-slate-100 text-amber-500 z-10"
+                    >
+                        <TrendingUp size={24} />
+                    </motion.div>
+
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
+                        className="max-w-4xl mx-auto relative z-20"
+                    >
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-sm font-medium mb-8">
+                            <span className="flex h-2 w-2 rounded-full bg-indigo-500"></span>
+                            CloudHisaab 2.0 is now live
+                        </div>
+                        <h1 className="text-5xl md:text-7xl font-bold text-slate-900 tracking-tight mb-8 leading-[1.1]">
+                            Smart billing & inventory for <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">modern businesses</span>
+                        </h1>
+                        <p className="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                            The all-in-one cloud platform designed for retailers and distributors to manage GST billing, stock, and customer ledgers seamlessly.
+                        </p>
+                        
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <a href="https://app.cloudhisab.in/register" className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white rounded-full font-medium flex items-center justify-center gap-2 hover:bg-indigo-600 hover:shadow-xl hover:shadow-indigo-500/20 transition-all duration-300 group">
+                                Start your free trial
+                                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                            </a>
+                            <a href="#demo" className="w-full sm:w-auto px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-slate-50 transition-all duration-300">
+                                <Play size={18} className="text-slate-400" />
+                                Watch Demo
+                            </a>
+                        </div>
+                        <p className="mt-5 text-sm text-slate-500">No credit card required • 7-day free trial</p>
+                    </motion.div>
+
+                    {/* Dashboard Preview */}
+                    <motion.div 
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="mt-20 relative mx-auto max-w-5xl"
+                    >
+                        <motion.div 
+                            animate={{ scale: [1, 1.02, 1], opacity: [0.15, 0.25, 0.15] }}
+                            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                            className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-20"
+                        ></motion.div>
+                        <div className="relative rounded-2xl bg-white border border-slate-200 shadow-2xl overflow-hidden flex flex-col h-[400px] sm:h-[500px] md:h-[600px]">
+                            {/* Browser Header */}
+                            <div className="bg-slate-50 border-b border-slate-200 px-4 py-3 flex items-center gap-2">
+                                <div className="flex gap-1.5">
+                                    <div className="w-3 h-3 rounded-full bg-rose-400"></div>
+                                    <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                                    <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
+                                </div>
+                                <div className="mx-auto bg-white border border-slate-200 rounded-md px-3 py-1 text-xs text-slate-400 font-medium w-1/2 text-center truncate shadow-sm">
+                                    app.cloudhisab.in/dashboard
+                                </div>
+                            </div>
+                            
+                            {/* App Interface Mockup */}
+                            <div className="flex-1 flex bg-slate-50/50 relative">
+                                
+                                {/* Animated Cursor */}
+                                <motion.div 
+                                    animate={{ 
+                                        x: [0, 250, 150, 350, 50, 0], 
+                                        y: [0, 180, 280, 120, 60, 0],
+                                    }}
+                                    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                                    className="absolute pointer-events-none z-50 text-slate-800 drop-shadow-md hidden sm:block"
+                                    style={{ top: "15%", left: "25%" }}
+                                >
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
+                                    </svg>
+                                </motion.div>
+
+                                {/* Sidebar */}
+                                <div className="w-16 md:w-56 bg-slate-50 border-r border-slate-200 p-4 hidden sm:flex flex-col gap-2 text-slate-600">
+                                    <div className="flex items-center gap-2 mb-8 px-2 text-slate-900">
+                                        <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-sm">C</div>
+                                        <span className="font-bold hidden md:block">CloudHisaab</span>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-3 px-3 py-2 bg-white text-indigo-600 rounded-lg shadow-sm border border-slate-100">
+                                        <BarChart3 size={18} />
+                                        <span className="text-sm font-semibold hidden md:block">Dashboard</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 px-3 py-2 hover:bg-white/60 rounded-lg transition-colors cursor-pointer">
+                                        <Package size={18} />
+                                        <span className="text-sm font-medium hidden md:block">Inventory</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 px-3 py-2 hover:bg-white/60 rounded-lg transition-colors cursor-pointer">
+                                        <Users size={18} />
+                                        <span className="text-sm font-medium hidden md:block">Customers</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 px-3 py-2 hover:bg-white/60 rounded-lg transition-colors cursor-pointer">
+                                        <CheckCircle2 size={18} />
+                                        <span className="text-sm font-medium hidden md:block">Invoices</span>
+                                    </div>
+                                </div>
+                                
+                                {/* Main Content */}
+                                <div className="flex-1 p-6 md:p-8 flex flex-col gap-6 overflow-hidden">
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <div className="text-xl font-bold text-slate-900 mb-1">Dashboard Overview</div>
+                                            <div className="text-sm text-slate-500">Welcome back, Admin. Here's what's happening today.</div>
+                                        </div>
+                                        <motion.div 
+                                            whileHover={{ scale: 1.05 }}
+                                            animate={{ boxShadow: ["0px 0px 0px rgba(79,70,229,0)", "0px 0px 15px rgba(79,70,229,0.5)", "0px 0px 0px rgba(79,70,229,0)"] }}
+                                            transition={{ duration: 2, repeat: Infinity }}
+                                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium shadow-md cursor-pointer flex items-center gap-2"
+                                        >
+                                            <span className="text-lg leading-none">+</span> New Sale
+                                        </motion.div>
+                                    </div>
+                                    
+                                    {/* Stats Row */}
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        {[
+                                            { label: "Total Revenue", value: "₹1,24,500", trend: "+12.5%", color: "text-emerald-500" },
+                                            { label: "Invoices Today", value: "142", trend: "+5.2%", color: "text-emerald-500" },
+                                            { label: "Pending Dues", value: "₹12,400", trend: "-2.4%", color: "text-rose-500" },
+                                            { label: "Items in Stock", value: "8,450", trend: "+1.1%", color: "text-emerald-500" }
+                                        ].map((stat, i) => (
+                                            <motion.div 
+                                                key={i} 
+                                                animate={{ y: [0, -4, 0] }}
+                                                transition={{ duration: 4, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
+                                                className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col gap-1 hover:shadow-md transition-shadow relative overflow-hidden cursor-pointer"
+                                            >
+                                                <div className="text-xs font-medium text-slate-500">{stat.label}</div>
+                                                <div className="text-xl md:text-2xl font-bold text-slate-900 mt-1">{stat.value}</div>
+                                                <div className={`text-[10px] font-medium mt-1 ${stat.color}`}>{stat.trend} from last week</div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                    
+                                    {/* Chart & Table Area */}
+                                    <div className="flex-1 flex flex-col lg:flex-row gap-6 min-h-0">
+                                        <div className="flex-[2] bg-white border border-slate-100 rounded-xl shadow-sm p-4 flex flex-col relative overflow-hidden">
+                                            <div className="flex justify-between items-center mb-6">
+                                                <div className="text-sm font-bold text-slate-900">Revenue (Last 7 Days)</div>
+                                                <div className="text-xs font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md">This Week</div>
+                                            </div>
+                                            <div className="flex-1 flex items-end justify-between gap-2 md:gap-4 px-2 pb-6 relative">
+                                                {/* Chart Grid Lines */}
+                                                <div className="absolute inset-0 flex flex-col justify-between pb-6 pointer-events-none">
+                                                    {[1,2,3,4].map(l => <div key={l} className="w-full border-t border-slate-100 border-dashed"></div>)}
+                                                </div>
+                                                
+                                                {[
+                                                    { h: 30, d: "Mon" }, { h: 50, d: "Tue" }, { h: 40, d: "Wed" }, 
+                                                    { h: 70, d: "Thu" }, { h: 55, d: "Fri" }, { h: 90, d: "Sat" }, { h: 65, d: "Sun" }
+                                                ].map((bar, j) => (
+                                                    <div key={j} className="w-full relative group h-full flex items-end z-10">
+                                                        <motion.div 
+                                                            initial={{ height: `${bar.h}%` }}
+                                                            animate={{ height: [`${bar.h}%`, `${bar.h + 10}%`, `${bar.h}%`] }}
+                                                            transition={{ duration: 3, repeat: Infinity, delay: j * 0.15, ease: "easeInOut" }}
+                                                            className={`w-full rounded-t-md ${j === 5 ? 'bg-indigo-500 shadow-lg shadow-indigo-500/30' : 'bg-indigo-100 group-hover:bg-indigo-200'} transition-colors cursor-pointer`} 
+                                                        />
+                                                        <div className="absolute -bottom-6 w-full text-center text-[10px] sm:text-xs text-slate-400 font-medium">{bar.d}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="flex-1 bg-white border border-slate-100 rounded-xl shadow-sm p-4 hidden md:flex flex-col gap-4 overflow-hidden">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <div className="text-sm font-bold text-slate-900">Recent Transactions</div>
+                                                <div className="text-xs text-indigo-600 cursor-pointer font-medium">View All</div>
+                                            </div>
+                                            <div className="flex-1 overflow-y-auto pr-1 space-y-3">
+                                                {[
+                                                    { name: "Rahul Enterprises", time: "10 mins ago", amt: "+₹4,500", status: "Paid" },
+                                                    { name: "Sharma Mart", time: "1 hour ago", amt: "+₹1,200", status: "Paid" },
+                                                    { name: "Gupta Electronics", time: "3 hours ago", amt: "+₹8,500", status: "Pending" },
+                                                    { name: "Verma Traders", time: "5 hours ago", amt: "+₹3,250", status: "Paid" },
+                                                ].map((tx, k) => (
+                                                    <div key={k} className="flex justify-between items-center border-b border-slate-50 pb-2 hover:bg-slate-50 p-1 rounded-lg transition-colors cursor-pointer">
+                                                        <div className="flex gap-3 items-center">
+                                                            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs">
+                                                                {tx.name.charAt(0)}
+                                                            </div>
+                                                            <div className="flex flex-col">
+                                                                <div className="text-xs font-bold text-slate-800">{tx.name}</div>
+                                                                <div className="text-[10px] text-slate-500">{tx.time}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex flex-col items-end">
+                                                            <div className="text-xs font-bold text-slate-800">{tx.amt}</div>
+                                                            <div className={`text-[10px] font-medium ${tx.status === 'Paid' ? 'text-emerald-500' : 'text-amber-500'}`}>{tx.status}</div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
             {/* Features Section */}
-            <section className="py-40 px-4 bg-white" id="features">
-                <div className="max-w-7xl mx-auto">
-                    <motion.div initial="initial" whileInView="whileInView" viewport={{ once: true }} variants={fadeIn} className="text-center mb-32">
-                        <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-6 italic">Super Powers</h2>
-                        <div className="w-40 h-3 bg-[#ff5cd3] mx-auto border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"></div>
-                    </motion.div>
+            <section className="py-24 bg-transparent relative" id="features">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <h2 className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-3">Powerful Capabilities</h2>
+                        <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Everything you need to run your business</h3>
+                        <p className="text-lg text-slate-600">Built with modern technology to give you speed, security, and simplicity.</p>
+                    </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <FeatureCard 
-                            icon={<Zap size={40} />} 
-                            title="Quick GST Billing" 
-                            desc="Generate professional GST invoices in seconds. Support for thermal printers & barcodes." 
-                            color="#00f5ff"
+                            icon={<Zap size={24} className="text-indigo-600" />} 
+                            title="Lightning Fast Billing" 
+                            desc="Create GST invoices in seconds with barcode support. Print directly to thermal or laser printers." 
                         />
                         <FeatureCard 
-                            icon={<Package size={40} />} 
-                            title="Inventory Control" 
-                            desc="Real-time stock tracking with low-stock alerts. Never run out of your best-sellers." 
-                            color="#ff5cd3"
+                            icon={<Package size={24} className="text-purple-600" />} 
+                            title="Smart Inventory" 
+                            desc="Real-time stock tracking, low-stock alerts, and batch management. Never miss a sale." 
                         />
                         <FeatureCard 
-                            icon={<BarChart3 size={40} />} 
-                            title="Sales Analytics" 
-                            desc="Detailed reports on profits, sales trends, and tax liabilities at your fingertips." 
-                            color="#ffeb00"
+                            icon={<BarChart3 size={24} className="text-blue-600" />} 
+                            title="Actionable Analytics" 
+                            desc="Understand your profit margins, top-selling items, and customer trends with visual reports." 
                         />
                         <FeatureCard 
-                            icon={<Users size={40} />} 
-                            title="Customer Ledger" 
-                            desc="Manage udhaar/credit with automated WhatsApp reminders for pending payments." 
-                            color="#ffeb00"
+                            icon={<Users size={24} className="text-emerald-600" />} 
+                            title="Digital Ledger" 
+                            desc="Manage 'udhaar' efficiently. Send automated payment reminders via WhatsApp to customers." 
                         />
                         <FeatureCard 
-                            icon={<Shield size={40} />} 
-                            title="Cloud Backup" 
-                            desc="Your data is safe, secure, and backed up daily in the cloud. Access from anywhere." 
-                            color="#00f5ff"
+                            icon={<Shield size={24} className="text-rose-600" />} 
+                            title="Bank-Grade Security" 
+                            desc="Your data is encrypted and backed up automatically to the cloud every day. 100% safe." 
                         />
                         <FeatureCard 
-                            icon={<TrendingUp size={40} />} 
-                            title="Tally Export" 
-                            desc="One-click export to Tally and other accounting software for easy filing." 
-                            color="#ff5cd3"
+                            icon={<TrendingUp size={24} className="text-amber-600" />} 
+                            title="Easy Accounting" 
+                            desc="Export your financial data to Tally or give your CA direct access for hassle-free tax filing." 
                         />
                     </div>
                 </div>
             </section>
 
             {/* Pricing Section */}
-            <section className="bg-black py-40 px-4 border-y-[6px] border-black overflow-hidden" id="pricing">
-                <div className="max-w-7xl mx-auto text-center">
-                    <motion.div initial="initial" whileInView="whileInView" viewport={{ once: true }} variants={fadeIn}>
-                        <h2 className="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter mb-4 italic">The Loot</h2>
-                        <p className="text-white/40 font-black uppercase tracking-[0.3em] text-sm mb-32 italic">Choose your merchant path</p>
-                    </motion.div>
+            <section className="py-24 bg-transparent relative" id="pricing">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <h2 className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-3">Transparent Pricing</h2>
+                        <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Plans that scale with your business</h3>
+                        <p className="text-lg text-slate-600">Start for free, upgrade when you need more power.</p>
+                    </div>
 
-                    <div className="grid md:grid-cols-3 gap-0 max-w-6xl mx-auto items-stretch">
+                    <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                         <PricingCard 
                             title="Starter" 
                             price="99" 
-                            desc="Perfect for small retail shops starting out." 
-                            features={['100 invoices/mo', 'Basic Inventory', 'Udhaar Ledger', '1 User Access']}
-                            btnText="Choose Starter"
-                            color="white"
+                            desc="For small retailers just getting started." 
+                            features={['100 invoices/month', 'Basic Inventory', 'Customer Ledger', '1 User Account', 'Standard Support']}
+                            btnText="Start Free Trial"
                         />
                         <PricingCard 
                             title="Professional" 
                             price="299" 
-                            desc="Ideal for growing businesses and supermarkets." 
-                            features={['Unlimited Invoices', 'Advanced Inventory', 'Sales Analytics', 'WhatsApp Sharing', '3 Staff Accounts']}
-                            btnText="Go Professional"
-                            color="#ffeb00"
+                            desc="For growing businesses needing more power." 
+                            features={['Unlimited Invoices', 'Advanced Inventory', 'Sales Analytics', 'WhatsApp Integration', '3 User Accounts', 'Priority Support']}
+                            btnText="Get Professional"
                             featured={true}
                         />
                         <PricingCard 
-                            title="Yearly" 
-                            price="250" 
-                            desc="Best value for long-term growth." 
-                            features={['Everything in Pro', 'Billed ₹3,000/yr', 'Priority Support', 'Barcode Support', 'Multi-Store Ready']}
-                            btnText="Go Yearly"
-                            color="#00f5ff"
+                            title="Enterprise" 
+                            price="Custom" 
+                            desc="For multi-store operations." 
+                            features={['Everything in Professional', 'Multi-Store Management', 'API Access', 'Custom Integrations', 'Unlimited Users', 'Dedicated Account Manager']}
+                            btnText="Contact Sales"
                         />
                     </div>
                 </div>
             </section>
 
             {/* FAQ Section */}
-            <section className="bg-[#f3f4f6] py-40 px-4 border-b-[6px] border-black" id="faq">
-                <div className="max-w-3xl mx-auto">
-                    <motion.div initial="initial" whileInView="whileInView" viewport={{ once: true }} variants={fadeIn} className="text-center mb-24">
-                        <h2 className="text-6xl md:text-7xl font-black uppercase tracking-tighter italic">Curious Minds</h2>
-                    </motion.div>
-                    <div className="space-y-6">
-                        <FaqItem q="Is my business data safe?" a="Absolutely. We use industry-standard encryption and perform daily cloud backups. Your business data is 100% private and secure." />
-                        <FaqItem q="Can I use it on my phone?" a="Yes! CloudHisaab is fully responsive. You can manage your shop from any smartphone, tablet, or PC with an internet connection." />
-                        <FaqItem q="Do I need internet to bill?" a="You need an active connection to sync data and generate GST reports, but our lightweight design ensures it works even on 3G/4G speeds." />
-                        <FaqItem q="Can I export data to Tally?" a="Yes, you can export all your sales and purchase data in formats compatible with Tally and other accounting software." />
+            <section className="py-24 bg-transparent" id="faq">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <h3 className="text-3xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h3>
+                        <p className="text-slate-600">Have a question? We're here to help.</p>
+                    </div>
+                    
+                    <div className="space-y-4">
+                        <FaqItem q="Is my business data secure?" a="Yes, we use bank-level 256-bit AES encryption. Your data is backed up daily across multiple secure cloud regions, ensuring it's never lost and always accessible only to you." />
+                        <FaqItem q="Can I access CloudHisaab from my mobile?" a="Absolutely. Our web application is fully responsive, meaning you get the full experience on your smartphone, tablet, or desktop computer." />
+                        <FaqItem q="Do I need a continuous internet connection?" a="While an internet connection is required for cloud syncing and generating live reports, the app has basic offline capabilities so you can continue billing during brief internet outages." />
+                        <FaqItem q="How hard is it to migrate my current data?" a="It's incredibly easy. We provide simple Excel/CSV templates to import your products, inventory, and customer data in minutes. Our support team can also assist you with migration." />
                     </div>
                 </div>
             </section>
 
             {/* CTA Section */}
-            <section className="bg-[#ff5cd3] py-40 px-4 border-b-[10px] border-black text-center relative overflow-hidden">
-                <div className="max-w-4xl mx-auto relative z-10">
-                    <motion.h2 
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        transition={{ type: "spring", damping: 10 }}
-                        className="text-7xl md:text-9xl font-black text-black uppercase tracking-tighter leading-[0.8] mb-16 italic"
-                    >
-                        Ready To <br /> Boss Up?
-                    </motion.h2>
-                    <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-                        <motion.a 
-                            href="https://app.cloudhisab.in"
-                            whileHover={{ scale: 1.05, x: -4, y: -4 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="brutal-btn bg-black text-white text-2xl px-16 py-5 shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] inline-block"
-                        >
-                            Start Free Trial
-                        </motion.a>
-                        <motion.button 
-                            whileHover={{ scale: 1.05, x: -4, y: -4 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="brutal-btn bg-white text-black text-2xl px-16 py-5"
-                        >
-                            Talk To Us
-                        </motion.button>
+            <section className="py-24 relative overflow-hidden bg-transparent z-0 border-t border-slate-200/50">
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-200/40 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/4 pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-200/40 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/4 pointer-events-none"></div>
+                
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-900 relative z-10">
+                    <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to transform your retail business?</h2>
+                    <p className="text-slate-600 text-lg mb-10 max-w-2xl mx-auto">Join thousands of smart retailers who have automated their billing, inventory, and accounting with CloudHisaab.</p>
+                    
+                    <div className="flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="https://app.cloudhisab.in/register" className="px-8 py-4 bg-indigo-600 text-white rounded-full font-bold shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:scale-105 transition-all duration-300">
+                            Start Your 7-Day Free Trial
+                        </a>
+                        <a href="https://wa.me/919419403158?text=Hello,%20I%20am%20interested%20in%20CloudHisaab" target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-white text-slate-700 rounded-full font-medium border border-slate-200 shadow-sm hover:bg-slate-50 transition-all duration-300 flex items-center justify-center gap-2">
+                            Contact Sales
+                        </a>
                     </div>
-                    <p className="mt-12 font-black text-xs uppercase tracking-[0.4em] opacity-40">No credit card required. No games. No limits.</p>
                 </div>
             </section>
 
             {/* Footer */}
-            <footer className="bg-white py-16 px-6 border-b-[30px] border-[#ff5cd3]">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
-                    <div className="text-center md:text-left">
-                        <span className="font-black text-4xl uppercase tracking-tighter italic">CloudHisaab</span>
-                        <div className="flex flex-col gap-1 mt-4 opacity-40 font-bold text-xs uppercase tracking-widest">
-                            <div className="flex items-center justify-center md:justify-start gap-2">
-                                <Cloud size={14} /> support@cloudhisab.in
-                            </div>
-                            <div className="flex items-center justify-center md:justify-start gap-2">
-                                <Phone size={14} /> +91 9419403158
-                            </div>
-                            <div className="mt-1">Jammu & Kashmir, India</div>
+            <footer className="bg-slate-950 text-slate-400 py-12 border-t border-slate-900">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                        <div className="col-span-1 md:col-span-1">
+                            <span className="font-bold text-xl text-white tracking-tight mb-4 block">CloudHisaab</span>
+                            <p className="text-sm text-slate-500 mb-4">The smart cloud ERP for modern Indian retailers. Billing, inventory, and accounting made simple.</p>
+                        </div>
+                        <div>
+                            <h4 className="text-white font-semibold mb-4">Product</h4>
+                            <ul className="space-y-2 text-sm">
+                                <li><a href="#" className="hover:text-indigo-400 transition-colors">Features</a></li>
+                                <li><a href="#" className="hover:text-indigo-400 transition-colors">Pricing</a></li>
+                                <li><a href="#" className="hover:text-indigo-400 transition-colors">Changelog</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-white font-semibold mb-4">Company</h4>
+                            <ul className="space-y-2 text-sm">
+                                <li><a href="/about" className="hover:text-indigo-400 transition-colors">About Us</a></li>
+                                <li><a href="/contact" className="hover:text-indigo-400 transition-colors">Contact</a></li>
+                                <li><a href="/privacy" className="hover:text-indigo-400 transition-colors">Privacy Policy</a></li>
+                                <li><a href="/terms" className="hover:text-indigo-400 transition-colors">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-white font-semibold mb-4">Contact</h4>
+                            <ul className="space-y-2 text-sm">
+                                <li className="flex items-center gap-2"><Cloud size={16} /> support@cloudhisab.in</li>
+                                <li className="flex items-center gap-2"><Phone size={16} /> +91 9419403158</li>
+                                <li className="mt-2 text-slate-500">Jammu & Kashmir, India</li>
+                            </ul>
                         </div>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-12 font-black text-xs uppercase tracking-[0.3em] opacity-40">
-                        {['Privacy', 'Terms', 'Support', 'API'].map((l) => (
-                            <a key={l} href="#" className="hover:opacity-100 hover:text-black transition-all">{l}</a>
-                        ))}
-                    </div>
-                    <div className="font-black text-xs uppercase tracking-[0.3em] opacity-40">
-                        © 2026 CloudHisaab.
+                    <div className="pt-8 border-t border-slate-800 text-sm flex flex-col md:flex-row justify-between items-center">
+                        <p>© 2026 CloudHisaab. All rights reserved.</p>
+                        <div className="flex gap-4 mt-4 md:mt-0">
+                            {/* Social Icons could go here */}
+                        </div>
                     </div>
                 </div>
             </footer>
+            </div>
         </div>
     );
 }
 
-function FeatureCard({ icon, title, desc, color }: { icon: any, title: string, desc: string, color: string }) {
+function FeatureCard({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
     return (
         <motion.div 
             variants={fadeIn}
-            whileHover={{ y: -10, x: -10 }}
-            className="bg-white border-[4px] border-black p-12 flex flex-col h-full shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] transition-all"
+            initial="initial"
+            whileInView="whileInView"
+            className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all duration-300 group"
         >
-            <div className="w-20 h-20 border-[4px] border-black flex items-center justify-center mb-12 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]" style={{ backgroundColor: color }}>
+            <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 {icon}
             </div>
-            <h3 className="text-3xl font-black uppercase mb-6 italic tracking-tight">{title}</h3>
-            <p className="font-bold text-black/60 leading-tight text-lg uppercase italic">{desc}</p>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">{title}</h3>
+            <p className="text-slate-600 leading-relaxed">{desc}</p>
         </motion.div>
     );
 }
 
-function PricingCard({ title, price, desc, features, btnText, color, featured = false }: any) {
+function PricingCard({ title, price, desc, features, btnText, featured = false }: any) {
     return (
         <motion.div 
             variants={fadeIn}
-            whileHover={{ y: featured ? -5 : -15, scale: featured ? 1.05 : 1 }}
-            className={`border-[4px] border-black p-12 flex flex-col text-left transition-all ${featured ? 'scale-105 relative z-10 border-[6px] shadow-[20px_20px_0px_0px_rgba(0,0,0,1)]' : 'shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]'}`}
-            style={{ backgroundColor: color }}
+            initial="initial"
+            whileInView="whileInView"
+            className={`rounded-2xl p-8 flex flex-col relative ${featured ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20 scale-105 z-10' : 'bg-white border border-slate-200 text-slate-900 shadow-sm hover:shadow-md transition-shadow'}`}
         >
             {featured && (
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-[#ff5cd3] text-white px-8 py-2 border-[4px] border-black text-xs font-black uppercase tracking-[0.3em] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-amber-400 to-orange-400 text-white px-4 py-1 rounded-full text-xs font-bold tracking-wider uppercase shadow-sm">
                     Most Popular
                 </div>
             )}
-            <h3 className="font-black text-4xl uppercase mb-3 italic tracking-tighter">{title}</h3>
-            <p className="font-black text-black/40 text-sm mb-12 uppercase italic leading-tight">{desc}</p>
-            <div className="text-7xl font-black mb-16 tracking-tighter italic">₹{price}<span className="text-lg opacity-40">/mo</span></div>
-            <ul className="space-y-6 flex-grow mb-16 font-black text-xs uppercase tracking-widest">
+            <h3 className={`text-xl font-semibold mb-2 ${featured ? 'text-indigo-100' : 'text-slate-900'}`}>{title}</h3>
+            <p className={`text-sm mb-6 h-10 ${featured ? 'text-indigo-200' : 'text-slate-500'}`}>{desc}</p>
+            <div className="mb-8">
+                {price !== 'Custom' ? (
+                    <div className="flex items-baseline gap-1">
+                        <span className="text-4xl font-bold">₹{price}</span>
+                        <span className={`text-sm ${featured ? 'text-indigo-200' : 'text-slate-500'}`}>/month</span>
+                    </div>
+                ) : (
+                    <div className="text-4xl font-bold">Custom</div>
+                )}
+            </div>
+            
+            <ul className="space-y-4 flex-grow mb-8">
                 {features.map((f: string, i: number) => (
-                    <li key={i} className="flex items-center gap-4">
-                        <CheckCircle2 size={20} className={title === 'Hustler' ? 'text-[#27c93f]' : 'text-black'} />
-                        <span>{f}</span>
+                    <li key={i} className="flex items-start gap-3 text-sm">
+                        <CheckCircle2 size={18} className={`shrink-0 mt-0.5 ${featured ? 'text-indigo-300' : 'text-indigo-500'}`} />
+                        <span className={featured ? 'text-indigo-50' : 'text-slate-600'}>{f}</span>
                     </li>
                 ))}
             </ul>
-            <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`brutal-btn w-full text-lg py-5 italic ${featured ? 'bg-black text-white' : 'bg-white text-black'}`}
+            
+            <button 
+                className={`w-full py-3 rounded-lg font-medium transition-all ${
+                    featured 
+                        ? 'bg-white text-indigo-600 hover:bg-slate-50' 
+                        : 'bg-slate-50 text-slate-900 hover:bg-slate-100 border border-slate-200'
+                }`}
             >
                 {btnText}
-            </motion.button>
+            </button>
         </motion.div>
     );
 }
@@ -444,46 +545,26 @@ function PricingCard({ title, price, desc, features, btnText, color, featured = 
 function FaqItem({ q, a }: { q: string, a: string }) {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <motion.div variants={fadeIn} className="border-[4px] border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border border-slate-200 rounded-xl bg-white overflow-hidden">
             <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full p-8 text-left flex justify-between items-center font-black uppercase text-lg tracking-widest italic"
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-slate-50 transition-colors"
             >
-                <span>{q}</span>
-                <motion.div animate={{ rotate: isOpen ? 90 : 0 }}>
-                    <ChevronRight size={24} />
-                </motion.div>
+                <span className="font-semibold text-slate-900">{q}</span>
+                <ChevronRight size={20} className={`text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
             </button>
-            {isOpen && (
-                <motion.div 
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    className="p-8 pt-0 font-black text-black/50 border-t-[4px] border-black bg-slate-50 text-base leading-relaxed uppercase italic"
-                >
-                    {a}
-                </motion.div>
-            )}
-        </motion.div>
-    );
-}
-
-function FileIcon() {
-    return (
-        <svg width="100" height="120" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
-            <path d="M10 0H50L80 30V90C80 95.5228 75.5228 100 70 100H10C4.47715 100 0 95.5228 0 90V10C0 4.47715 4.47715 0 10 0Z" fill="currentColor" fillOpacity="0.2" />
-            <path d="M10 0H50L80 30V90C80 95.5228 75.5228 100 70 100H10C4.47715 100 0 95.5228 0 90V10C0 4.47715 4.47715 0 10 0Z" stroke="currentColor" strokeWidth="4" />
-            <path d="M50 0V30H80" stroke="currentColor" strokeWidth="4" />
-            <path d="M20 50H60M20 65H60M20 80H40" stroke="currentColor" strokeWidth="4" />
-        </svg>
-    );
-}
-
-function TagIcon() {
-    return (
-        <svg width="100" height="100" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
-            <path d="M40 0L80 40L40 80L0 40L40 0Z" fill="currentColor" fillOpacity="0.2" />
-            <path d="M40 0L80 40L40 80L0 40L40 0Z" stroke="currentColor" strokeWidth="4" />
-            <circle cx="40" cy="40" r="10" stroke="currentColor" strokeWidth="4" />
-        </svg>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="px-6 pb-4 pt-2 text-slate-600"
+                    >
+                        {a}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
     );
 }

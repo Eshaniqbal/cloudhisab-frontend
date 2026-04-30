@@ -1,44 +1,12 @@
 @import "tailwindcss";
 
-@theme {
-  --color-brutal-olive: #5b611c;
-  --color-brutal-pink: #ff5cd3;
-  --color-brutal-cyan: #00f5ff;
-  --color-brutal-yellow: #ffeb00;
-  --color-brutal-bg-light: #f3f4f6;
-  --color-brutal-black: #000000;
-  --color-brutal-white: #ffffff;
-}
-
 @layer base {
   body {
-    background-color: var(--color-brutal-white);
-    color: var(--color-brutal-black);
-    @apply antialiased selection:bg-brutal-cyan selection:text-black font-sans;
+    @apply bg-[#FCFBF4] text-slate-900 antialiased font-sans;
   }
 }
 
-.brutal-border {
-  @apply border-[3px] border-brutal-black;
-}
-
-.brutal-shadow {
-  @apply shadow-[6px_6px_0px_0px_rgba(0,0,0,1)];
-}
-
-.brutal-card {
-  @apply bg-brutal-white border-[3px] border-brutal-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)];
-}
-
-.brutal-btn {
-  @apply px-8 py-3 font-black uppercase tracking-wider border-[3px] border-brutal-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none;
-}
-
-.brutal-btn-black { @apply bg-brutal-black text-white hover:bg-[#222]; }
-.brutal-btn-white { @apply bg-brutal-white text-black hover:bg-slate-50; }
-.brutal-btn-yellow { @apply bg-brutal-yellow text-black hover:bg-[#e6d300]; }
-
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 14px; height: 14px; }
-::-webkit-scrollbar-track { background: var(--color-brutal-white); border-left: 3px solid #000; }
-::-webkit-scrollbar-thumb { background: var(--color-brutal-black); border: 3px solid var(--color-brutal-white); }
+/* Custom Scrollbar for professional look */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors; }
